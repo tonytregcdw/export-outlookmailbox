@@ -8,6 +8,12 @@
 # reference:  https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.outlook._store.storeid?view=outlook-pia#Microsoft_Office_Interop_Outlook__Store_StoreID
 ########################
 
+$strUserName = get-content env:UserName
+$strDate = get-date -format dd-MM-yyyy
+
+#target PST
+$exportlocation = get-content env:LOCALAPPDATA
+$exportFile = $exportlocation+"\"+$strUserName+"_"+$strDate+".PST"
 
 #kill outlook if already running
 get-process | where { $_.Name -like "Outlook" }| kill
@@ -23,8 +29,6 @@ $inbox = $namespace.getDefaultFolder($olFolders::olFolderInBox)
 $calendar = $namespace.getDefaultFolder($olFolders::olFolderCalendar)
 $contacts = $namespace.getDefaultFolder($olFolders::olFolderContacts)
 
-#target PST
-$exportFile = "C:\Temp\ttExport7.PST"
 
 #add PST to user mailbox profile
 $namespace.AddStore($exportFile)
